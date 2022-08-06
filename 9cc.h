@@ -12,19 +12,20 @@
 
 // トークンの種類
 typedef enum {
-  TK_PUNCT, // 記号
-  TK_NUM,   // 整数トークン
-  TK_EOF,   // 入力の終わりを表すトークン
+  TK_PUNCT,  // 記号
+  TK_IDENT,  // 識別子
+  TK_NUM,    // 整数トークン
+  TK_EOF,    // 入力の終わりを表すトークン
 } TokenKind;
 
 // トークン型
 typedef struct Token Token;
 struct Token {
-  TokenKind kind; // トークンの型
-  Token *next;    // 次の入力トークン
-  int val;        // kindがTK_NUMの場合、その数値
-  char *loc;      // トークン文字列
-  int len;        // トークン長さ
+  TokenKind kind;  // トークンの型
+  Token *next;     // 次の入力トークン
+  int val;         // kindがTK_NUMの場合、その数値
+  char *loc;       // トークン文字列
+  int len;         // トークン長さ
 };
 
 void error(char *fmt, ...);
@@ -40,25 +41,28 @@ Token *tokenize(char *input);
 
 //
 typedef enum {
-  ND_ADD, // +
-  ND_SUB, // -
-  ND_MUL, // *
-  ND_DIV, // /
-  ND_NEG, // unary -
-  ND_EQ,  // ==
-  ND_NE,  // !=
-  ND_LT,  // <
-  ND_LE,  // <=
-  ND_NUM, // Integer
+  ND_ADD,     // +
+  ND_SUB,     // -
+  ND_MUL,     // *
+  ND_DIV,     // /
+  ND_ASSIGN,  // =
+  ND_NEG,     // unary -
+  ND_EQ,      // ==
+  ND_NE,      // !=
+  ND_LT,      // <
+  ND_LE,      // <=
+  ND_EXPR_STMT, // Expression statement
+  ND_NUM,     // Integer
 } NodeKind;
 
 // AST node type
 typedef struct Node Node;
 struct Node {
-  NodeKind kind; // Node kind
-  Node *lhs;     // Left-hand side
-  Node *rhs;     // Right-hand side
-  int val;       // Used if kind == ND_NUM
+  NodeKind kind;  // Node 
+  Node *next;     // Next node
+  Node *lhs;      // Left-hand side
+  Node *rhs;      // Right-hand side
+  int val;        // Used if kind == ND_NUM
 };
 
 Node *parse(Token *tok);
